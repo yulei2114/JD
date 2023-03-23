@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 这里写配置内容 -->
+    <environments default="development">
+        <environment id="development">
+            <!--事务管理模式，JDBC表示将采用java.sql.Connection接口定义的相关事务方法来管理事务-->
+            <!--事务管理模式，MANAGED表示交给web应用容器（tomcat）来管理,如果在本地应用程序指定为MANAGED，那么任何DML都不会对数据库产生影响-->
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/customers?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai&amp;useSSL = false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="1234"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis_config/mapper.xml"/>
+    </mappers>
+</configuration>

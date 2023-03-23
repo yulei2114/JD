@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+        <!--使用工厂bean注册SqlSessionFactory-->
+        <context:property-placeholder location="classpath:druid.properties"></context:property-placeholder>
+        <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+                <property name="dataSource" ref="DataSource"></property>
+                <property name="mapperLocations" value="classpath:mapper/CustomerMapper.xml"></property>
+        </bean>
+        <bean id="DataSource" class="com.alibaba.druid.pool.DruidDataSource">
+                <property name="driverClassName" value="${jdbc.driver}"></property>
+                <property name="url" value="${jdbc.url}"></property>
+                <property name="username" value="${jdbc.name}"></property>
+                <property name="password" value="${jdbc.password}"></property>
+                <!--初始化连接数量-->
+                <property name="initialSize" value="${jdbc.initialSize}"></property>
+                <!--最大活动连接-->
+                <property name="maxActive" value="${jdbc.maxActive}"></property>
+                <!--设置最小空闲连接-->
+                <property name="minIdle" value="${jdbc.minIdel}"></property>
+                <!--设置最大等待时间-->
+                <property name="maxWait" value="${jdbc.maxWait}"></property>
+        </bean>
+        <!--使用工厂bean返回Dao实例-->
+        <bean id="CustomerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+                <property name="mapperInterface" value="com.jd.dao.CustomerMapper"></property>
+                <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+        </bean>
+        <!--将Dao实例注入到service对象中-->
+        <bean id="LogAndRegisterImpl" class="com.jd.service.serviceImpl.LogAndRegisterImpl">
+                <property name="customerMapper" ref="CustomerMapper"></property>
+        </bean>
+        <!--开启·spring事务管理-->
+        <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                <property name="dataSource" ref="DataSource"></property>
+        </bean>
+        <tx:advice id="transactionInterceptor" transaction-manager="transactionManager">
+                <tx:attributes>
+                        <tx:method name="*mapper" rollback-for="java.lang.Exception"/>
+                </tx:attributes>
+        </tx:advice>
+        <aop:config>
+                <aop:pointcut id="servicecut" expression="execution(* com.jd.service.*.*(..))"/>
+                <aop:advisor advice-ref="transactionInterceptor" pointcut-ref="servicecut"></aop:advisor>
+        </aop:config>
+
+</beans>

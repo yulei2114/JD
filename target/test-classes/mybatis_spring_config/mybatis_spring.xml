@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--这里不再用SqlSessionFactoryBuilder,使用工厂bean，这个类实现了FactoryBean接口-->
+    <context:property-placeholder location="classpath:mybatis_spring_config/druid/druid.properties"></context:property-placeholder>
+    <bean class="com.alibaba.druid.pool.DruidDataSource" id="dataSource">
+        <property name="driverClassName" value="${jdbc.driver}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="minIdle" value="${jdbc.minIdel}"></property>
+        <property name="maxActive" value="${jdbc.maxActive}"></property>
+        <property name="maxWait" value="${jdbc.maxWait}"></property>
+    </bean>
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+<!--        configlocation属性指定mybatis的主配置文件的位置，通常，基础配置指的是 <settings> 或 <typeAliases> 元素-->
+<!--        需要注意的是，这个配置文件并不需要是一个完整的 MyBatis 配置。确切地说，任何环境配置（<environments>），-->
+<!--        数据源（<DataSource>）和 MyBatis 的事务管理器（<transactionManager>）都会被忽略。 -->
+<!--        SqlSessionFactoryBean 会创建它自有的 MyBatis 环境配置（Environment），并按要求设置自定义环境的值-->
+        <property name="configLocation" value="classpath:mybatis_spring_config/config/config.xml"></property>
+<!--        mapperLocation属性指定映射文件位置，或者直接可以在configLocation属性中指定<mappers>标签-->
+        <property name="mapperLocations" value="classpath:mybatis_spring_config/mapper/mapper.xml"></property>
+    </bean>
+<!--    这个bean将返回自定义Dao接口的代理实现类-->
+<!--    <bean class="org.mybatis.spring.mapper.MapperFactoryBean" id="mapperFactoryBean">-->
+<!--        <property name="mapperInterface" value="mybatis_spring.UserMapper.SelectCustomers"></property>-->
+<!--        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+<!--    </bean>-->
+<!--    这里使用扫描接口所在包的方式-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="mybatis_spring.UserMapper"></property>
+    </bean>
+<!--    将业务对象注册为bean，并且将mybatis映射成的代理对象注入到业务对象-->
+    <context:component-scan base-package="mybatis_spring.service"></context:component-scan>
+<!--    配置spring的事务管理1：基于xml配置，也就是说直接利用aop,在配置文件中对方法进行代理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+<!--    <tx:advice id="advice" transaction-manager="transactionManager">-->
+<!--        &lt;!&ndash;事务针对于那些方法，以及事务的回滚异常&ndash;&gt;-->
+<!--        <tx:attributes>-->
+<!--            <tx:method name="find*" rollback-for="java.lang.Exception"/>-->
+<!--            <tx:method name="insert*" rollback-for="java.lang.Exception"></tx:method>-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
+<!--    <aop:config>-->
+<!--        <aop:pointcut id="trancpoint" expression="execution(* mybatis_spring.service.ServiceImpl.*(..))"/>-->
+<!--        <aop:advisor advice-ref="advice" pointcut-ref="trancpoint"></aop:advisor>-->
+<!--    </aop:config>-->
+<!--    配置spring的事务管理2：基于注解扫描，将要扫描的类（Service层实现类），方法上加上@Transactional注解即可-->
+<!--    这里是基于注解的spring容器配置，直接使用：
+        <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+-->
+    <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+</beans>

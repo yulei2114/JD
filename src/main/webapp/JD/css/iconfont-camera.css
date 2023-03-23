@@ -1,0 +1,70 @@
+@font-face {
+  font-family: "iconfont-camera"; /* Project id  */
+  src: url('iconfont-camera.ttf?t=1657939164655') format('truetype');
+}
+
+.iconfont-camera {
+  font-family: "iconfont-camera" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+  font-family: "iconfont-search"; /* Project id  */
+  src: url('iconfont-search.ttf?t=1657941062158') format('truetype');
+}
+
+.search-img {
+  font-family: "iconfont-search" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+  font-family: "iconfont-shopcart"; /* Project id  */
+  src: url('iconfont-shopcart.ttf?t=1658014746107') format('truetype');
+}
+
+.cart-img {
+  font-family: "iconfont-shopcart" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+  font-family: "iconfont_arrow"; /* Project id  */
+  src: url('iconfont_arrow_right.ttf?t=1658363304709') format('truetype');
+}
+.arrow{
+	font-family: "iconfont_arrow" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;;
+}
+@font-face {
+  font-family: "iconfont_quxiao"; /* Project id  */
+  src: url('iconfont_quxiao.ttf?t=1659668330671') format('truetype');
+}
+.quxiao{
+	font-family: "iconfont_quxiao";
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;;
+}
+@font-face {
+  font-family: "iconfont_change"; /* Project id  */
+  src: url('iconfont_change.ttf?t=1659832279482') format('truetype');
+}
+.change{
+	font-family: "iconfont_change";
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;;
+}
+.Y-M{
+	font-family: "iconfont_arrow" !important;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;;
+}

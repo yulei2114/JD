@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper为根元素，namespace指定了命名空间,mybatis在-->
+<mapper namespace="com.jd.dao.CustomerMapper">
+    <insert id="insertCustomer">
+        insert into customerAccount values (${customer.account},${customer.password})
+    </insert>
+    <select id="checkCustomer" resultType="com.jd.entity.Customer">
+        select * from customerAccount where account=${customer.account}
+    </select>
+    <!--The content of element type "resultMap" must match "(constructor?,id*,result*,association*,collection*,discriminator?)".-->
+    <!--主要原因就是resultMap的属性配置得按照constructor、id、result、association、collection、discriminator的顺序。-->
+<!--    <resultMap id="UserMap" type="User">-->
+<!--        <constructor>-->
+<!--            <arg column="password" javaType="string"></arg>-->
+<!--            <arg column="email" javaType="string"></arg>-->
+<!--        </constructor>-->
+<!--        <id property="id" column="id" javaType="int"></id>-->
+<!--        <result property="registeDate" column="registedate" javaType="date"></result>-->
+<!--    </resultMap>-->
+</mapper>
