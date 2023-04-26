@@ -3,11 +3,29 @@
 <!--mapper为根元素，namespace指定了命名空间,mybatis在-->
 <mapper namespace="com.jd.dao.CustomerMapper">
     <insert id="insertCustomer">
-        insert into customerAccount values (${customer.account},${customer.password})
+        insert into Account values (#{customer.account},#{customer.password})
     </insert>
-    <select id="checkCustomer" resultType="com.jd.entity.Customer">
-        select * from customerAccount where account=${customer.account}
+<!--    登录映射，判断用户账号和密码-->
+    <select id="checkByCustomer" resultType="com.jd.entity.Customer">
+        select * from Account where account=#{customer.account} and password=#{customer.password}
     </select>
+<!--    注册映射，判断用户是否存在-->
+    <select id="checkByAccount" resultType="com.jd.entity.Customer">
+        select * from Account where account=#{account}
+    </select>
+    <select id="checkEmail" resultType="com.jd.entity.Customer">
+        select  account,password from account where account=(select account from accountEmail where account=#{customer.account} and email=#{customer.email})
+    </select>
+<!--    用户修改信息时，可以根据用户传入的参数动态生成sql，目前默认提供更改的字段为password,nickName-->
+    <update id="updateCustomer">
+        update account
+            <set>
+                <if test="password!=null">password=#{password},</if>
+                <if test="nickName!=null">nickName=#{nickName}</if>
+            </set>
+        where account =#{account}
+    </update>
+<!--    找回密码映射，判断用户账号和邮箱-->
     <!--The content of element type "resultMap" must match "(constructor?,id*,result*,association*,collection*,discriminator?)".-->
     <!--主要原因就是resultMap的属性配置得按照constructor、id、result、association、collection、discriminator的顺序。-->
 <!--    <resultMap id="UserMap" type="User">-->

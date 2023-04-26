@@ -1,6 +1,7 @@
 package com.jd.dao;
 
 import com.jd.entity.Customer;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
@@ -62,9 +63,18 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
  *
  */
 
+@Mapper
 public interface CustomerMapper {
+
     //注册用户，将来使用mybatis框架映射一个insert语句
     public void insertCustomer(@Param("customer") Customer customer);
+    //插入数据之前，根据账号信息判断用户是否存在
+    public Customer checkByAccount(@Param("account") String account);
     //登录用户，将来接受用户信息，并返回一个用户完整信息
-    public Customer checkCustomer(@Param("customer") Customer customer);
+    public Customer checkByCustomer(@Param("customer") Customer customer);
+    //用户找回密码，用户提供账号和密保邮箱,返回boolean类型数据
+    public Customer checkEmail(@Param("customer") Customer customer);
+    //根据用户提交的数据更改用户数据，使用mybatis的动态Sql
+    public void updateCustomer(Customer customer);
+
 }

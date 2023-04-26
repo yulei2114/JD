@@ -3,6 +3,12 @@
   <component name="WebContextManager">
     <option name="state">
       <map>
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/JD/JD-first-page-dynamic.html" value="file://$PROJECT_DIR$/src/main/webapp/JD" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/JD/JD-first-page.html" value="file://$PROJECT_DIR$/src/main/webapp/JD" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/dynamic/JD-first-page-login.html" value="file://$PROJECT_DIR$/src/main/webapp/dynamic" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/static/JD-first-page-login.html" value="file://$PROJECT_DIR$/src/main/webapp/static" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/static/cart.html" value="file://$PROJECT_DIR$/src/main/webapp/static" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/static/forgot-pws.html" value="file://$PROJECT_DIR$/src/main/webapp/static" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/test.html" value="file://$PROJECT_DIR$/src/main/webapp" />
       </map>
     </option>

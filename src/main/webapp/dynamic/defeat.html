@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+    <!--
+        ${x}会返回存储在Thymeleaf上下文里的变量x，或者作为请求属性存储的变量x。
+        ${param.x}会返回一个称为x的请求属性（可能多值）。
+        ${session.x}会返回一个称为x的会话属性。
+        ${application.x}会返回一个称为x的servlet上下文属性。
+    -->
+  <h1>访问失败</h1>
+  <p th:text="">welcome!</p>
+</body>
+</html>

@@ -1,7 +1,0 @@
-com\jd\servlet\ServletContainerInit.class
-com\jd\entity\Customer.class
-com\jd\dao\CustomerMapper.class
-com\jd\service\serviceImpl\LogAndRegisterImpl.class
-com\jd\DaoAndService\SpringAndMybatisContext.class
-com\jd\service\LogAndRegister.class
-com\jd\servlet\config\ConfigWebContext.class

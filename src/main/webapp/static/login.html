@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="zxx">
+<!--<![endif]-->
+<!-- Begin Head -->
+
+<head>
+    <title>欢迎登录！</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="MobileOptimized" content="320">
+    <!--Start Style -->
+    <link rel="stylesheet" type="text/css" href="css/fonts.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/auth.css">
+    <style>
+        #account-prompt,#psd-prompt{
+            display: block;
+            width: 100px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 10px;
+            position: absolute;
+            left: 0;
+            top: 100%;
+        }
+    </style>
+    <script src="js/jquery-3.6.3.js"></script>
+    <script>
+        /*
+            jQuery.ready()事件，当DOM结构加载完毕该事件触发，此时可能一些图片文件没有加载完毕，如果需要在资源完全
+            加载再执行函数，应该在指定元素上绑定.load()事件
+            .ready()方法通常和<body onload="">属性是不兼容的。
+            如果load必须使用，要么不使用.ready()，要么使用jQuery的.load()方法向 window 或一些指定的元素（例如，图片）绑定 load 事件
+         */
+        //写法一，或者$(function(){})
+        //文档加载完毕，给表单的提交按钮绑定提交T事件，通过ajax和后台交互数据，在不刷新页面的情况下给用户提示信息
+        let accountTimer;//用户账号为空提示信息定时器
+        let psdTimer;//用户密码为空
+        let errorMsgTimer;//用户账号或者密码错误
+        let isProcess=false;//submit事件触发函数执行与否
+        $(document).ready(function (){
+                $("#loginForm").submit(function () {
+                    //判断账号和密码输入框不能为空
+                    let $accountInput= $("input:text");
+                    let $psdInput=$("input:password");
+                    if ($accountInput.val()==""){
+                        let accountPrompt=$("#account-prompt");
+                        clearTimeout(accountTimer);
+                        accountPrompt.text("账号不嫩为空");
+                        $accountInput.focus();
+                        accountTimer= window.setTimeout(function () {
+                            accountPrompt.text("");
+                        },5000);
+                        return false;
+                    }
+                    if ($psdInput.val()==""){
+                        let psdPrompt=$("#psd-prompt");
+                        clearTimeout(psdTimer);
+                        psdPrompt.text("密码不能为空!");
+                        $psdInput.focus();
+                        psdTimer= window.setTimeout(function () {
+                            psdPrompt.text("");
+                        },5000);
+                        return false;
+                    }
+                    //发送数据
+                    if (isProcess==false){
+                        isProcess=true;
+                        let $form=$(this);
+                        //var jsonObj = $("#myform").serializeObject();将表单数据转换为json对象
+                        let customer={"account":$accountInput.val(),"password":$psdInput.val()};
+                        $.ajax({
+                            url:"/JDservice/login",
+                            data:customer,
+                            dataType:"json",
+                            type:"POST",
+                            error:function (msg) {
+                                alert(JSON.stringify(msg));
+                            },
+                            success:function (result) {
+                                if (result.status=="success"){
+                                    let inputSubmit=$("input:submit");
+                                    inputSubmit.val("正在登录...");
+                                    setTimeout(function () {
+                                        $form[0].submit();
+                                        inputSubmit.val("登录");
+                                        isProcess=false;
+                                    },2000)
+
+                                }
+                                else{
+                                    isProcess=false;
+                                    let errorMsg=$("#islogin");
+                                    errorMsg.text("账号或密码错误!");
+                                    clearTimeout(errorMsgTimer);
+                                    errorMsgTimer=window.setTimeout(function () {
+                                        errorMsg.text("");
+                                    },5000);
+                                }
+                            }})
+                    }
+                    return false;
+                })
+        })
+    </script>
+</head>
+
+<body>
+    <div style="background-color: #8b5a694d" class="ad-auth-wrapper">
+        <div class="ad-auth-box">
+            <div class="row align-items-center">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div style="opacity: 0.9" class="ad-auth-img">
+                        <img width="300px" src="picture/findpsd.png" alt="">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="ad-auth-content">
+                        <form id="loginForm" action="/JDservice/loginview" method="get">
+                            <h2><span class="primary">你好,</span>欢迎登录!</h2>
+                            <p>请输入您的账号和密码</p>
+                            <div class="ad-auth-form">
+                                <div class="ad-auth-feilds mb-30">
+                                    <input type="text" placeholder="账号" class="ad-input" name="account"><span style="color: #e93854;" id="account-prompt"></span>
+                                    <div class="ad-auth-icon">
+                                        <svg t="1681110255854" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1478" width="200" height="200"><path d="M637.953132 548.278251c71.730695-40.298821 120.348995-116.815519 120.348995-204.542536 0-129.46256-105.705484-234.781234-235.641835-234.781234-129.936351 0-235.628532 105.318674-235.628532 234.781234 0 84.393085 45.041846 158.307516 112.302739 199.683878-152.041812 47.787376-262.605953 189.523471-262.605953 356.600721 0 5.058203 0.560772 9.956769 0.762363 14.97404l52.356438 0c-0.230244-4.986571-0.76134-9.914814-0.76134-14.97404 0-177.279612 144.855132-321.502341 322.909387-321.502341 178.054255 0 322.910411 144.222729 322.910411 321.502341 0 5.058203-0.532119 9.987468-0.775666 14.97404l52.371788 0c0.200568-5.016247 0.760317-9.914814 0.760317-14.97404C887.263268 737.931682 783.009855 600.017636 637.953132 548.278251zM339.389222 343.735715c0-100.588953 82.208327-182.423773 183.27107-182.423773 101.06479 0 183.272094 81.83482 183.272094 182.423773 0 100.589976-82.207303 182.423773-183.272094 182.423773C421.597549 526.159488 339.389222 444.325691 339.389222 343.735715z" data-original="#000000" class="active-path" data-old_color="#000000" p-id="1479" fill="#9abeed"></path></svg>
+                                    </div>
+                                </div>
+                                <div class="ad-auth-feilds">
+                                    <input type="password" placeholder="密码" class="ad-input" name="password"><span style="color: #e93854;" id="psd-prompt"></span>
+                                    <div class="ad-auth-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 482.8 482.8"><path d="M395.95,210.4h-7.1v-62.9c0-81.3-66.1-147.5-147.5-147.5c-81.3,0-147.5,66.1-147.5,147.5c0,7.5,6,13.5,13.5,13.5    s13.5-6,13.5-13.5c0-66.4,54-120.5,120.5-120.5c66.4,0,120.5,54,120.5,120.5v62.9h-275c-14.4,0-26.1,11.7-26.1,26.1v168.1    c0,43.1,35.1,78.2,78.2,78.2h204.9c43.1,0,78.2-35.1,78.2-78.2V236.5C422.05,222.1,410.35,210.4,395.95,210.4z M395.05,404.6    c0,28.2-22.9,51.2-51.2,51.2h-204.8c-28.2,0-51.2-22.9-51.2-51.2V237.4h307.2L395.05,404.6L395.05,404.6z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#9abeed"></path><path d="M241.45,399.1c27.9,0,50.5-22.7,50.5-50.5c0-27.9-22.7-50.5-50.5-50.5c-27.9,0-50.5,22.7-50.5,50.5    S213.55,399.1,241.45,399.1z M241.45,325c13,0,23.5,10.6,23.5,23.5s-10.5,23.6-23.5,23.6s-23.5-10.6-23.5-23.5    S228.45,325,241.45,325z" data-original="#000000" class="active-path" data-old_color="#000000" fill="#9abeed"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ad-other-feilds">
+                                <div class="ad-checkbox">
+                                    <label>
+									<input type="checkbox" name="remeber" class="ad-checkbox">
+									<span>记住我</span>
+									</label>
+                                </div>
+                                <a class="forgot-pws-btn" href="forgot-pws.html">忘记密码了?</a>
+                            </div>
+                            <div style="position: relative" class="ad-auth-btn">
+                                <input type="submit" value="登录" style="background-color: #e93854" class="ad-btn ad-login-member"/>
+                                <span id="islogin" style="display: block; position: absolute;top: 0;left: 80%;height: 100%;width: 120px; line-height: 50px; text-align: center;color: #e93854;" ></span>
+                            </div>
+                            <p class="ad-register-text">没有账号? <a id="register" style="color: #e93854" href="register.html">点击注册</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="ad-notifications ad-error">
+                <p><span>Duhh!</span>Something Went Wrong</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

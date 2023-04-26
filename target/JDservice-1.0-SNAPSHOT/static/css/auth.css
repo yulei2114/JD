@@ -22,7 +22,7 @@ Author:
     --main-border-color: #e4e4e4;
     --error: #ff592c;
     --success: #44de4f;
-    --main-color: #e93854;
+    --main-color: #e1251b;
     --color1: #efb5a3;
     --color2: #315f72;
 }
@@ -55,7 +55,7 @@ button:hover {
 }
 
 a:hover {
-    color: #e93854;
+    color: var(--main-color);
 }
 
 img {
@@ -104,7 +104,7 @@ iframe {
     background: #cfecff;
 }
 ::-webkit-scrollbar-thumb {
-    background: #e93854;
+    background: #11a1fd;
 }
 .ad-btn {
     min-width: 170px;
@@ -164,7 +164,7 @@ iframe {
 }
 
 .ad-auth-wrapper:before {
-    background-image: url(../picture/logo.jpg);
+    background-image: url(../image/auth-bg.png);
     background-size: cover;
     background-repeat: no-repeat;
     content: "";

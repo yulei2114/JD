@@ -5,9 +5,9 @@
 <mapper namespace="mybatis_spring.UserMapper.SelectCustomers">
     <!-- SQL语句 -->
     <select id="findById" resultType="int">
-        select * from test where id=${id}
+        select * from email where id=${id}
     </select>
     <insert id="insertOne">
-        insert into test values (${id})
+        insert into email values (${id})
     </insert>
 </mapper>
